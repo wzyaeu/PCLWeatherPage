@@ -2,6 +2,8 @@
 
 本项目是一个PCL的主页项目，旨在展现天气信息。
 
+![展示](https://raw.githubusercontent.com/wzyaeu/PCLWeatherPage/refs/heads/main/image/rm1.png)
+
 # 初始化指引
 
 ## 0.前提提要
@@ -62,7 +64,7 @@
 1. 确保生成的每一个文件都已填好内容（`port.txt`会自动写入`2521`）
 2. 运行`main.py`
 3. 在PCL里的`设置 - 个性化 - 主页`中选择`联网更新`，填入地址`http://localhost:{port}`
-   > {port}处填入`port.txt`的内容
+   > `{port}`处填入`port.txt`的内容
 4. 完成！
 
 # 运行时注意
