@@ -211,6 +211,11 @@ def mainpage():
             })
             for index, day_data in enumerate(futweather_data['daily'], start=1)
         ]),
+
+        'nowweather-sources':', '.join(nowweather_data['refer']['sources']),
+        'nowweather-license':'\\n'.join(nowweather_data['refer']['license']),
+        'futweather-sources':', '.join(futweather_data['refer']['sources']),
+        'futweather-license':'\\n'.join(futweather_data['refer']['license']),
     })
 
     print(f'完毕')
