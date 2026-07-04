@@ -31,6 +31,7 @@ def check_file(filename = None):
             ('priv',''),
             ('pub',''),
             ('apihost',''),
+            ('locations',''),
             ('pid',''),
             ('tid',''),
             ('port','2521'),
@@ -134,12 +135,8 @@ def svg_to_xamlpath(icon):
 def mainpage():
     print('获取到请求')
     global jwt, jwt_end_time
-    def check_location(s: str) -> bool:
-        if len(s) == 0:
-            return False
-        return all(ch.isdigit() or ('A' <= ch <= 'Z') for ch in s)
     location = request.args.get('location','')
-    if jwt == '' or not location or not content['apihost'] or not check_location(location):
+    if jwt == '' or not location or not content['apihost'] or location not in content['locations'].splitlines():
         print('配置未达到要求被驳回')
         return read_tamplate('init')
     print(f'jwt结束时间 {jwt_end_time} 当前时间 {timestamp()}')
