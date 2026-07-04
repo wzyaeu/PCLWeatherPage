@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import os
 import time
 import json
@@ -34,7 +34,6 @@ def check_file(filename = None):
             ('pid',''),
             ('tid',''),
             ('port','2521'),
-            ('location',''),
         ]
         content = {}
 
@@ -135,7 +134,12 @@ def svg_to_xamlpath(icon):
 def mainpage():
     print('获取到请求')
     global jwt, jwt_end_time
-    if jwt == '' and not content['location'] and not content['apihost']:
+    def check_location(s: str) -> bool:
+        if len(s) == 0:
+            return False
+        return all(ch.isdigit() or ('A' <= ch <= 'Z') for ch in s)
+    location = request.args.get('location','')
+    if jwt == '' or not location or not content['apihost'] or not check_location(location):
         print('配置未达到要求被驳回')
         return read_tamplate('init')
     print(f'jwt结束时间 {jwt_end_time} 当前时间 {timestamp()}')
@@ -144,9 +148,13 @@ def mainpage():
         jwt = gen_jwt()
 
     print('接受请求')
+    location_data_nowtime_file = f'nowweather-time-{location}.txt'
+    location_data_nowdata_file = f'nowweather-data-{location}.txt'
+    location_data_futtime_file = f'futweather-time-{location}.txt'
+    location_data_futdata_file = f'futweather-data-{location}.txt'
     t_mainpage = read_tamplate('mainpage')
     t_futweather_item = read_tamplate('futweather-item')
-    nowweather_time = (lambda x: 0 if x == '' else x)(check_file('nowweather-time.txt'))
+    nowweather_time = (lambda x: 0 if x == '' else x)(check_file(location_data_nowtime_file))
     print(f'nowweather格式化后时间 {nowweather_time} 当前格式化后时间 {int(timestamp()/(30*60))}')
     try:
         nowweather_time = int(nowweather_time) # type: ignore
@@ -154,16 +162,16 @@ def mainpage():
     except:
         print(f'nowweather重新获取内容')
         nowweather_time = int(timestamp()/(30*60))
-        with open(os.path.join(FILE_PATH, 'nowweather-time.txt'),'w',encoding='utf-8') as f:
+        with open(os.path.join(FILE_PATH, location_data_nowtime_file),'w',encoding='utf-8') as f:
             f.write(str(int(timestamp()/(30*60))))
-        nowweather_data = json.loads(api('/v7/weather/now',{'location':content['location']}))
-        with open(os.path.join(FILE_PATH, 'nowweather-data.txt'),'w',encoding='utf-8') as f:
+        nowweather_data = json.loads(api('/v7/weather/now',{'location':location}))
+        with open(os.path.join(FILE_PATH, location_data_nowdata_file),'w',encoding='utf-8') as f:
             json.dump(nowweather_data,f)
     else:
-        with open(os.path.join(FILE_PATH, 'nowweather-data.txt'),'r',encoding='utf-8') as f:
+        with open(os.path.join(FILE_PATH, location_data_nowdata_file),'r',encoding='utf-8') as f:
             nowweather_data = json.load(f)
         
-    futweather_time = (lambda x: 0 if x == '' else x)(check_file('futweather-time.txt'))
+    futweather_time = (lambda x: 0 if x == '' else x)(check_file(location_data_futtime_file))
     print(f'futweather格式化后时间 {nowweather_time} 当前格式化后时间 {int(timestamp()/(30*60))}')
     try:
         futweather_time = int(futweather_time) # type: ignore
@@ -171,18 +179,18 @@ def mainpage():
     except:
         print(f'futweather重新获取内容')
         futweather_time = int(timestamp()/(60*60))
-        with open(os.path.join(FILE_PATH, 'futweather-time.txt'),'w',encoding='utf-8') as f:
+        with open(os.path.join(FILE_PATH, location_data_futtime_file),'w',encoding='utf-8') as f:
             f.write(str(int(timestamp()/(60*60))))
-        futweather_data = json.loads(api('/v7/weather/30d',{'location':content['location']}))
-        with open(os.path.join(FILE_PATH, 'futweather-data.txt'),'w',encoding='utf-8') as f:
+        futweather_data = json.loads(api('/v7/weather/30d',{'location':location}))
+        with open(os.path.join(FILE_PATH, location_data_futdata_file),'w',encoding='utf-8') as f:
             json.dump(futweather_data,f)
     else:
-        with open(os.path.join(FILE_PATH, 'futweather-data.txt'),'r',encoding='utf-8') as f:
+        with open(os.path.join(FILE_PATH, location_data_futdata_file),'r',encoding='utf-8') as f:
             futweather_data = json.loads(f.read())
 
     print(f'开始获取主页')
     t_mainpage = replaces(t_mainpage,{
-        'locations':content['location'],
+        'locations':location,
         'nowweather-time':iso8601_to_normaltime(nowweather_data['now']['obsTime']),
         'nowweather-temp':(nowweather_data['now']['temp']),
         'nowweather-weathericon':svg_to_xamlpath(nowweather_data['now']['icon']),

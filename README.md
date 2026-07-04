@@ -19,7 +19,7 @@
     ```dash
     python main.py
     ```
-2. 将在目录下生成`priv.txt`、`pub.txt`、`apihost.txt`、`pid.txt`、`tid.txt`、`port.txt`、`location.txt`。
+2. 将在目录下生成`priv.txt`、`pub.txt`、`apihost.txt`、`pid.txt`、`tid.txt`、`port.txt`。
 3. 关闭程序。
 
 ## 2. 申请 API Key
@@ -52,8 +52,7 @@
 ## 4.选定你的位置
 
 1. 跳转至[中国地区城市ID列表](https://github.com/qwd/LocationList/blob/master/China-City-List-latest.csv)通过第3列和第8列找到你的地区。
-2. 复制这个地区第一列的`Location_ID`。
-3. 粘贴至`location.txt`中。
+2. 复制这个地区第一列的`Location_ID`，此ID将粘贴在地址中。
 
 > 虽然你也可以选择外国地区，但那里的天气数据并不完整
 
@@ -63,10 +62,11 @@
 
 1. 确保生成的每一个文件都已填好内容（`port.txt`会自动写入`2521`）
 2. 运行`main.py`
-3. 在PCL里的`设置 - 个性化 - 主页`中选择`联网更新`，填入地址`http://localhost:{port}`
+3. 在PCL里的`设置 - 个性化 - 主页`中选择`联网更新`，填入地址`http://localhost:{port}?location={location}`
    > `{port}`处填入`port.txt`的内容
+   > `{location}`处填入选择的`Location_ID`
 4. 完成！
 
 ## 运行时注意
 
-- 不要乱动`nowweather-data.txt`、`nowweather-time.txt`、`futwweather-data.txt`、`futwweather-time.txt`，否则会导致不必要的api开销。
+- 不要乱动`nowweather-data-*.txt`、`nowweather-time-*.txt`、`futwweather-data-*.txt`、`futwweather-time-*.txt`，否则会导致不必要的api开销。

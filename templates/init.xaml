@@ -14,7 +14,7 @@
                    FontSize="16"
                    VerticalAlignment="Center"
                    Foreground="{DynamicResource ColorBrush3}"
-                   Text="未初始化"/>
+                   Text="错误页面"/>
         <local:MyIconTextButton Margin="2"
                                 Height="35"
                                 VerticalAlignment="Center"
@@ -32,7 +32,7 @@
     <TextBlock FontSize="17"
                FontWeight="Bold"
                Foreground="{DynamicResource ColorBrush3}"
-               Text="初始化指引"/>
+               Text="错误"/>
     <Line X1="0"
           Grid.Column="2"
           Y1="0"
@@ -48,6 +48,6 @@
         <TextBlock FontSize="15"
             TextWrapping="Wrap"
                Foreground="{DynamicResource ColorBrush3}"
-               Text="当前项目需要配置密钥与地区，请跟随同目录的README.md步骤指引"/>
+               Text="你的项目配置有错误或者地址没填地区ID"/>
     </StackPanel>
 </local:MyCard>
