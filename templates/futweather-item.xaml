@@ -1,0 +1,85 @@
+<StackPanel Margin="0,5"
+            Orientation="Horizontal">
+    <TextBlock FontSize="17"
+               Margin="0,0,10,0"
+               FontWeight="Bold"
+               Foreground="{DynamicResource ColorBrush3}"
+               Text="{date}"/>
+    <StackPanel Width="75"
+                Margin="0,0,5,0">
+        <StackPanel
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <TextBlock FontSize="17"
+                       FontFamily="Arial"
+                       Foreground="{DynamicResource ColorBrush3}"
+                       FontWeight="Bold"
+                       Text="{maxtemp}℃"/>
+            <TextBlock FontSize="15"
+                       VerticalAlignment="Bottom"
+                       Foreground="{DynamicResource ColorBrush4}"
+                       Text="/"/>
+            <TextBlock FontSize="15"
+                       VerticalAlignment="Bottom"
+                       FontFamily="Arial"
+                       Foreground="{DynamicResource ColorBrush4}"
+                       FontWeight="Bold"
+                       Text="{mintemp}℃"/>
+        </StackPanel>
+    </StackPanel>
+    <StackPanel Width="50"
+                Margin="0,0,5,0">
+        <StackPanel
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Path
+                Margin="0,0,5,0"
+                Width="20"
+                VerticalAlignment="Center"
+                Height="20"
+                Stretch="Uniform"
+                Fill="{DynamicResource ColorBrush3}"
+                Data="{dayicon}"/>
+            <Path
+                Width="20"
+                VerticalAlignment="Center"
+                Height="20"
+                Stretch="Uniform"
+                Fill="{DynamicResource ColorBrush3}"
+                Data="{nighticon}"/>
+        </StackPanel>
+    </StackPanel>
+    <StackPanel Width="100"
+                HorizontalAlignment="Right"
+                        ToolTip="本天的降水量">
+        <StackPanel
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <TextBlock FontSize="12"
+                       VerticalAlignment="Bottom"
+                       Foreground="{DynamicResource ColorBrush4}"
+                       Text="降水"/>
+            <TextBlock FontSize="15"
+                       Foreground="{DynamicResource ColorBrush3}"
+                       FontWeight="Bold"
+                       Text="{precip}mm"/>
+        </StackPanel>
+    </StackPanel>
+    <StackPanel Width="80"
+                HorizontalAlignment="Right">
+        <StackPanel
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <TextBlock FontSize="12"
+                       VerticalAlignment="Bottom"
+                       Foreground="{DynamicResource ColorBrush4}"
+                       Text="湿度"/>
+            <TextBlock FontSize="15"
+                       Foreground="{DynamicResource ColorBrush3}"
+                       FontWeight="Bold"
+                       Text="{humidity}%"/>
+        </StackPanel>
+    </StackPanel>
+</StackPanel>
