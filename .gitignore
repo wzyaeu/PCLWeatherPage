@@ -1,4 +1,4 @@
 .venv/
 svgfiles/
-*.txt
-!requirements.txt
+weatherdata/
+config/

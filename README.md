@@ -70,4 +70,4 @@
 
 ## 运行时注意
 
-- 不要乱动`nowweather-data-*.txt`、`nowweather-time-*.txt`、`futwweather-data-*.txt`、`futwweather-time-*.txt`，否则会导致不必要的api开销。
+- 不要乱动`weatherdata/`里的东西，否则可能会导致不必要的api开销。

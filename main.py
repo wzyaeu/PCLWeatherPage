@@ -27,6 +27,9 @@ def api(path,params={}):
 def check_file(filename = None):
     global content
     if filename is None:
+        os.makedirs(os.path.join(FILE_PATH,'svgfiles'),exist_ok=True)
+        os.makedirs(os.path.join(FILE_PATH,'weatherdata'),exist_ok=True)
+        os.makedirs(os.path.join(FILE_PATH,'config'),exist_ok=True)
         files = [
             ('priv',''),
             ('pub',''),
@@ -39,7 +42,7 @@ def check_file(filename = None):
         content = {}
 
         for name, default in files:
-            file_path = os.path.join(FILE_PATH, name+'.txt')
+            file_path = os.path.join(FILE_PATH, 'config', name+'.txt')
             if os.path.exists(file_path):
                 with open(file_path, 'r') as f:
                     fd = f.read().strip()
@@ -53,7 +56,6 @@ def check_file(filename = None):
                 fd = default
             content[name] = fd
 
-        os.makedirs(os.path.join(FILE_PATH,'svgfiles'),exist_ok=True)
     else:
         file_path = os.path.join(FILE_PATH, filename)
         if os.path.exists(file_path):
@@ -136,21 +138,32 @@ def mainpage():
     print('获取到请求')
     global jwt, jwt_end_time
     location = request.args.get('location','')
-    if jwt == '' or not location or not content['apihost'] or location not in content['locations'].splitlines():
+    t_error = read_tamplate('error')
+    
+    if jwt == '':
         print('配置未达到要求被驳回')
-        return read_tamplate('init')
+        return t_error.replace('{{text}}','JWT生成错误，检查你的配置。')
+    elif not content['apihost']:
+        print('配置未达到要求被驳回')
+        return t_error.replace('{{text}}','未填写apihost。')
+    elif not location:
+        print('地址未达到要求被驳回')
+        return t_error.replace('{{text}}','获取地址中locationID未填写。')
+    elif location not in content['locations'].splitlines():
+        print('地址未达到要求被驳回')
+        return t_error.replace('{{text}}','地址中locationID不在locations.txt。')
+    
     print(f'jwt结束时间 {jwt_end_time} 当前时间 {timestamp()}')
     if jwt_end_time - 1*60 < timestamp(): # 在最后1分钟前刷新
         print('重新生成jwt')
         jwt = gen_jwt()
 
     print('接受请求')
-    location_data_nowtime_file = f'nowweather-time-{location}.txt'
-    location_data_nowdata_file = f'nowweather-data-{location}.txt'
-    location_data_futtime_file = f'futweather-time-{location}.txt'
-    location_data_futdata_file = f'futweather-data-{location}.txt'
     t_mainpage = read_tamplate('mainpage')
     t_futweather_item = read_tamplate('futweather-item')
+
+    location_data_nowtime_file = f'weatherdata/nowweather-time-{location}.txt'
+    location_data_nowdata_file = f'weatherdata/nowweather-data-{location}.txt'
     nowweather_time = (lambda x: 0 if x == '' else x)(check_file(location_data_nowtime_file))
     print(f'nowweather格式化后时间 {nowweather_time} 当前格式化后时间 {int(timestamp()/(30*60))}')
     try:
@@ -168,6 +181,8 @@ def mainpage():
         with open(os.path.join(FILE_PATH, location_data_nowdata_file),'r',encoding='utf-8') as f:
             nowweather_data = json.load(f)
         
+    location_data_futtime_file = f'weatherdata/futweather-time-{location}.txt'
+    location_data_futdata_file = f'weatherdata/futweather-data-{location}.txt'
     futweather_time = (lambda x: 0 if x == '' else x)(check_file(location_data_futtime_file))
     print(f'futweather格式化后时间 {nowweather_time} 当前格式化后时间 {int(timestamp()/(30*60))}')
     try:
