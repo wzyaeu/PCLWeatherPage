@@ -19,7 +19,7 @@
     ```dash
     python main.py
     ```
-2. 将在目录下生成`priv.txt`、`pub.txt`、`apihost.txt`、`pid.txt`、`tid.txt`、`port.txt`、`locations.txt`。
+2. 将在`config/`目录下生成`priv.txt`、`pub.txt`、`apihost.txt`、`pid.txt`、`tid.txt`、`port.txt`、`locations.txt`。
 3. 关闭程序。
 
 ## 2. 申请 API Key
