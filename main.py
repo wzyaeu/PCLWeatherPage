@@ -176,7 +176,7 @@ def mainpage():
             f.write(str(int(timestamp()/(30*60))))
         nowweather_data = json.loads(api('/v7/weather/now',{'location':location}))
         with open(os.path.join(FILE_PATH, location_data_nowdata_file),'w',encoding='utf-8') as f:
-            json.dump(nowweather_data,f)
+            json.dump(nowweather_data,f,ensure_ascii=False)
     else:
         with open(os.path.join(FILE_PATH, location_data_nowdata_file),'r',encoding='utf-8') as f:
             nowweather_data = json.load(f)
@@ -195,7 +195,7 @@ def mainpage():
             f.write(str(int(timestamp()/(60*60))))
         futweather_data = json.loads(api('/v7/weather/30d',{'location':location}))
         with open(os.path.join(FILE_PATH, location_data_futdata_file),'w',encoding='utf-8') as f:
-            json.dump(futweather_data,f)
+            json.dump(futweather_data,f,ensure_ascii=False)
     else:
         with open(os.path.join(FILE_PATH, location_data_futdata_file),'r',encoding='utf-8') as f:
             futweather_data = json.loads(f.read())
