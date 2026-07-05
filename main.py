@@ -14,6 +14,7 @@ import base64
 
 app = Flask(__name__)
 FILE_PATH = os.path.dirname(__file__)
+VERSION = 'v1.2-20260705'
 
 timestamp = lambda : int(time.time())
 
@@ -236,6 +237,8 @@ def mainpage():
         'nowweather-license':'\\n'.join(nowweather_data['refer']['license']),
         'futweather-sources':', '.join(futweather_data['refer']['sources']),
         'futweather-license':'\\n'.join(futweather_data['refer']['license']),
+
+        'version':VERSION
     })
 
     print(f'完毕')
