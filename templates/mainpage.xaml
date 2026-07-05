@@ -412,7 +412,7 @@
                 Title="使用的API列表"
                 ToolTip="本项目使用和风天气的哪几个API以及使用频率和版权声明"
                 EventType="弹出窗口"
-                EventData="使用的API|===实时天气报表===\n使用的API：天气API-实时天气\nAPI文档：https://dev.qweather.com/docs/api/weather/weather-now\n使用频率：一天内最多调用48次，缓存一个半小时区间\n*即每天的半小时区间内（00:00-00:30、00:30-01:00等）各有一次数据，在一个区间内只会有一个数据，不会刷新\n数据来源：{nowweather-sources}\n版权许可：{nowweather-license} License\n\n===未来天气报表===\n使用的API：天气API-每日天气预报\nAPI文档：https://dev.qweather.com/docs/api/weather/weather-daily-forecast\nAPI的传参：预报天数-15d\n使用频率：一天内最多调用25次，缓存一小时区间\n*即每天的一小时区间内（00:00-01:00、01:00-02:00等）各有一次数据，在一个区间内只会有一个数据，不会刷新\n数据来源：{futweather-sources}\n版权许可：{futweather-license}"
+                EventData="使用的API|===实时天气报表===\n使用的API：天气API-实时天气\nAPI文档：https://dev.qweather.com/docs/api/weather/weather-now\n使用频率：一天内一个locationID最多调用48次，缓存一个半小时区间\n*即每天的半小时区间内（00:00-00:30、00:30-01:00等）每个locationID都各有一次数据，在一个区间内只会有一个数据，不会刷新\n数据来源：{nowweather-sources}\n版权许可：{nowweather-license} License\n\n===未来天气报表===\n使用的API：天气API-每日天气预报\nAPI文档：https://dev.qweather.com/docs/api/weather/weather-daily-forecast\nAPI的传参：预报天数-15d\n使用频率：一天内一个locationID最多调用24次，缓存一小时区间\n*即每天的一小时区间内（00:00-01:00、01:00-02:00等）每个locationID都各有一次数据，在一个区间内只会有一个数据，不会刷新\n数据来源：{futweather-sources}\n版权许可：{futweather-license}"
                 Type="Clickable"/>
         </Grid>
         <local:MyListItem
