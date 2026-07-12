@@ -1,0 +1,4 @@
+<TextBlock FontSize="13"
+           TextWrapping="Wrap"
+           Foreground="{DynamicResource ColorBrush3}"
+           Text="{text}"/>

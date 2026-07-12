@@ -22,6 +22,25 @@
                                 EventType="刷新页面"
                                 LogoScale="1"
                                 Logo="M841.140212 512.013257c0 181.498884-147.641328 329.140212-329.140212 329.140212s-329.140212-147.641328-329.140212-329.140212c0-175.391505 137.999348-318.746696 311.068586-328.211305l0 99.641714c0 3.249345 1.749929 6.286578 4.571392 7.928622 1.428103 0.821022 3.000662 1.214162 4.571392 1.214162s3.143289-0.39314 4.571392-1.214162l237.569748-137.141755c2.821463-1.642044 4.571392-4.679277 4.571392-7.928622s-1.749929-6.286578-4.571392-7.928622l-237.569748-137.141755c-2.856206-1.642044-6.286578-1.642044-9.142784 0-2.821463 1.642044-4.571392 4.679277-4.571392 7.928622l0 101.499527C280.537631 120.195606 109.717518 296.300248 109.717518 512.013257c0 221.820389 180.462093 402.282482 402.282482 402.282482s402.282482-180.462093 402.282482-402.282482L841.140212 512.013257z"/>
+        <!-- <local:MyIconTextButton Margin="2"
+                                Height="35"
+                                VerticalAlignment="Center"
+                                Text="保存本地位置"
+                                ToolTip="保存现在的LocationID在本地。保存后，访问任何PCLBangumiPage的项目时，都可以在更新地址填写 http(s)://.../?location=&#123;varible:PCLBangumiPage_LocationID} 来获取本地所保存的位置ID（如果项目支持这个locationID的话），不必再在更新地址填写LocationID。"
+                                LogoScale="1"
+                                Logo="M841.140212 512.013257c0 181.498884-147.641328 329.140212-329.140212 329.140212s-329.140212-147.641328-329.140212-329.140212c0-175.391505 137.999348-318.746696 311.068586-328.211305l0 99.641714c0 3.249345 1.749929 6.286578 4.571392 7.928622 1.428103 0.821022 3.000662 1.214162 4.571392 1.214162s3.143289-0.39314 4.571392-1.214162l237.569748-137.141755c2.821463-1.642044 4.571392-4.679277 4.571392-7.928622s-1.749929-6.286578-4.571392-7.928622l-237.569748-137.141755c-2.856206-1.642044-6.286578-1.642044-9.142784 0-2.821463 1.642044-4.571392 4.679277-4.571392 7.928622l0 101.499527C280.537631 120.195606 109.717518 296.300248 109.717518 512.013257c0 221.820389 180.462093 402.282482 402.282482 402.282482s402.282482-180.462093 402.282482-402.282482L841.140212 512.013257z">
+            <local:CustomEventService.Events>
+                <local:CustomEventCollection>
+                    <local:CustomEvent Type="修改变量"
+                            Data="PCLBangumiPage_LocationID|{locations}|已保存本地LocationID: {locations} !"/>
+                    <local:CustomEvent Type="修改设置"
+                            Data="UiCustomNet|{urlhead}/?location=&#123;varible:PCLBangumiPage_LocationID}"/>
+                    <local:CustomEvent Type="刷新页面"
+                            Data="-"/>
+                </local:CustomEventCollection>
+            </local:CustomEventService.Events>
+        </local:MyIconTextButton> -->
+        <!-- 替换标记在联网主页网址中会导致加载不出主页，等龙猫修 -->
     </StackPanel>
 </local:MyCard>
 <Grid Margin="5">
@@ -92,8 +111,8 @@
                                    Text="体感 {nowweather-feeltemp}℃ / {nowweather-weather}"/>
                     </StackPanel>
                 </StackPanel>
-                <Grid 
-                      Grid.Column="2">
+                <Grid
+                    Grid.Column="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="10*"/>
@@ -328,7 +347,8 @@
 <local:MyCard Margin="0,5">
     <StackPanel Margin="10">
         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto" Height="130">
+                      VerticalScrollBarVisibility="Auto"
+                Height="130">
             <StackPanel
                 HorizontalAlignment="Center">
                 {futweather-items}
@@ -419,6 +439,8 @@
             Margin="2"
             Title="Wzyaeu / Kaphia"
             Info="主页制作团"
+            EventType="打开帮助"
+            EventData="https://p.kaphia.qzz.io/personalpage.json"
             Type="Clickable"/>
     </StackPanel>
 </local:MyCard>

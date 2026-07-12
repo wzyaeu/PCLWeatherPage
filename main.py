@@ -24,7 +24,7 @@ def api(path,params={}):
     return requests.get(url,headers={
         'Authorization':f'Bearer {jwt}'
     },params=params).text
-
+ 
 def check_file(filename = None):
     global content
     if filename is None:
@@ -38,6 +38,7 @@ def check_file(filename = None):
             ('locations',''),
             ('pid',''),
             ('tid',''),
+            ('host',''),
             ('port','2521'),
         ]
         content = {}
@@ -134,6 +135,18 @@ def svg_to_xamlpath(icon):
     result = " ".join(d_values)
     return result
 
+def censor(text, ranges):
+    if not text or not ranges:
+        return text
+    chars = list(text)
+    for start, end in ranges:
+        start = max(0, min(start, len(chars)))
+        end = max(0, min(end, len(chars)))
+
+        for i in range(start, end):
+            chars[i] = '*'
+    return ''.join(chars)
+
 @app.route('/')
 def mainpage():
     print('获取到请求')
@@ -143,16 +156,47 @@ def mainpage():
     
     if jwt == '':
         print('配置未达到要求被驳回')
-        return t_error.replace('{{text}}','JWT生成错误，检查你的配置。')
+        t_error_text = read_tamplate('error/data_text')
+        return replaces(t_error,{
+            'text':'JWT生成错误，检查你的配置。',
+            'data':replaces(t_error_text,{
+                'text':'项目ID：'+(lambda x: censor(x,[(int(len(x)/2),len(x))]))(content['pid']),
+            })+replaces(t_error_text,{
+                'text':'凭据ID：'+(lambda x: censor(x,[(int(len(x)/2),len(x))]))(content['tid']),
+            })+replaces(t_error_text,{
+                'text':'私钥：'+(lambda x: censor(x,[(int(len(x)/2),len(x))]))(content['priv']),
+            })+replaces(t_error_text,{
+                'text':'公钥：'+(lambda x: censor(x,[(int(len(x)/2),len(x))]))(content['pub']),
+            })
+        })
     elif not content['apihost']:
         print('配置未达到要求被驳回')
-        return t_error.replace('{{text}}','未填写apihost。')
+        t_error_text = read_tamplate('error/data_text')
+        return replaces(t_error,{
+            'text':'未填写apihost。',
+            'data':replaces(t_error_text,{
+                'text':'apihost'+(lambda x: censor(x,[(0,9)]))(content['apihost']),
+            })
+        })
     elif not location:
         print('地址未达到要求被驳回')
-        return t_error.replace('{{text}}','获取地址中locationID未填写。')
+        t_error_btn = read_tamplate('error/data_btn')
+        return replaces(t_error,{
+            'text':'获取地址中locationID未填写，点击下列的locationID复制查询地址',
+            'data':'\n'.join([
+                replaces(t_error_btn,{
+                    'text':lid,
+                    'etype':'复制文本',
+                    'edata':f'{content['host']}:{content['port']}?location={lid}' if content['host'] != '' else f'http://127.0.0.1:{content['port']}?location={lid}'
+                })
+                for lid in content['locations'].splitlines()
+            ])
+        })
     elif location not in content['locations'].splitlines():
         print('地址未达到要求被驳回')
-        return t_error.replace('{{text}}','地址中locationID不在locations.txt。')
+        return replaces(t_error,{
+            'text':'地址中locationID不在locations.txt。'
+        })
     
     print(f'jwt结束时间 {jwt_end_time} 当前时间 {timestamp()}')
     if jwt_end_time - 1*60 < timestamp(): # 在最后1分钟前刷新
@@ -203,6 +247,7 @@ def mainpage():
 
     print(f'开始获取主页')
     t_mainpage = replaces(t_mainpage,{
+        'urlhead':f'{content['host']}:{content['port']}' if content['host'] != '' else f'http://127.0.0.1:{content['port']}',
         'locations':location,
         'nowweather-time':iso8601_to_normaltime(nowweather_data['now']['obsTime']),
         'nowweather-temp':(nowweather_data['now']['temp']),
