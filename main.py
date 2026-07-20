@@ -182,7 +182,7 @@ def mainpage():
         print('地址未达到要求被驳回')
         t_error_btn = read_tamplate('error/data_btn')
         return replaces(t_error,{
-            'text':'获取地址中locationID未填写，点击下列的locationID复制查询地址',
+            'text':'获取地址中locationID未填写，点击下列的locationID复制主页地址。复制后，粘贴至主页下载地址中',
             'data':'\n'.join([
                 replaces(t_error_btn,{
                     'text':lid,
